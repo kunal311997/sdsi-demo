@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Link Shortener</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">↗</span>
+          <h1>Link Shortener</h1>
+        </div>
+        <p class="tagline">Short links, real analytics.</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="card" aria-labelledby="shorten-heading">
+        <h2 id="shorten-heading">Shorten a URL</h2>
+        <form id="shorten-form" novalidate>
+          <div class="field">
+            <label for="url">Destination URL</label>
+            <input
+              id="url"
+              name="url"
+              type="text"
+              inputmode="url"
+              placeholder="https://example.com/a/very/long/path?with=query"
+              autocomplete="off"
+              spellcheck="false"
+              required
+            />
+            <p class="hint">Only http:// and https:// links are accepted.</p>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="alias">Custom alias <span class="optional">(optional)</span></label>
+              <input
+                id="alias"
+                name="alias"
+                type="text"
+                placeholder="launch-2026"
+                pattern="[A-Za-z0-9_-]{3,32}"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <p class="hint">3–32 characters: letters, digits, <code>_</code>, <code>-</code>.</p>
+            </div>
+
+            <div class="field">
+              <label for="expiresAt">Expires at <span class="optional">(optional)</span></label>
+              <input id="expiresAt" name="expiresAt" type="datetime-local" />
+              <p class="hint">Interpreted in your local time, sent as UTC.</p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="apiKey"
+              >API key <span class="optional">(only if the server requires one)</span></label
+            >
+            <input
+              id="apiKey"
+              name="apiKey"
+              type="password"
+              placeholder="Stored in this tab only"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="actions">
+            <button type="submit" id="submit-btn">Shorten</button>
+            <button type="button" id="refresh-btn" class="secondary">Refresh links</button>
+          </div>
+
+          <p id="form-error" class="error" role="alert" hidden></p>
+        </form>
+
+        <div id="result" class="result" hidden aria-live="polite">
+          <p class="result-label">Your short link</p>
+          <div class="result-row">
+            <a id="result-link" href="#" rel="noopener noreferrer nofollow"></a>
+            <button type="button" id="copy-btn" class="secondary small">Copy</button>
+          </div>
+          <dl class="result-meta">
+            <div>
+              <dt>Code</dt>
+              <dd id="result-code"></dd>
+            </div>
+            <div>
+              <dt>Target</dt>
+              <dd id="result-target" class="truncate"></dd>
+            </div>
+            <div>
+              <dt>Expires</dt>
+              <dd id="result-expires"></dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="stats-heading">
+        <div class="card-head">
+          <h2 id="stats-heading">Statistics</h2>
+          <input
+            id="stats-code"
+            type="text"
+            placeholder="Code, e.g. Ab3dE9x"
+            aria-label="Code to load statistics for"
+          />
+        </div>
+
+        <div id="stats-empty" class="empty">
+          Pick a link below or enter a code to see its analytics.
+        </div>
+
+        <div id="stats-panel" hidden>
+          <dl class="stats-grid">
+            <div>
+              <dt>Total clicks</dt>
+              <dd id="stat-total">0</dd>
+            </div>
+            <div>
+              <dt>Unique visitors</dt>
+              <dd id="stat-unique">0</dd>
+            </div>
+            <div>
+              <dt>Last access</dt>
+              <dd id="stat-last">—</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd id="stat-status">—</dd>
+            </div>
+          </dl>
+
+          <div class="chart-block">
+            <h3>Clicks per day</h3>
+            <div id="chart" class="chart" role="img" aria-label="Clicks per day chart"></div>
+          </div>
+        </div>
+
+        <p id="stats-error" class="error" role="alert" hidden></p>
+      </section>
+
+      <section class="card" aria-labelledby="links-heading">
+        <h2 id="links-heading">Links</h2>
+        <div class="table-scroll">
+          <table id="links-table">
+            <thead>
+              <tr>
+                <th scope="col">Code</th>
+                <th scope="col">Target</th>
+                <th scope="col">Clicks</th>
+                <th scope="col">Created</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="links-body">
+              <tr>
+                <td colspan="5" class="empty">No links yet. Shorten one above.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>URL Shortener MVP · codes are base62 · redirects are 302 so expiry is honoured.</p>
+      </div>
+    </footer>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>
